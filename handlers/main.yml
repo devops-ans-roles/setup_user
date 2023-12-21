@@ -1,2 +1,6 @@
 ---
 # handlers file for setup_user
+- name: Restart sshd
+  ansible.builtin.service:
+    name: sshd
+    state: restarted

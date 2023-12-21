@@ -1,2 +1,33 @@
 ---
 # tasks file for setup_user
+- name: Create a new user with sudo privileges
+  ansible.builtin.user:
+    name: "{{ username }}"
+    password: "{{ password }}"
+    groups: sudo
+    append: true
+    create_home: true
+    shell: /bin/bash
+
+- name: Ensure .ssh directory exists
+  ansible.builtin.file:
+    path: "/home/{{ username }}/.ssh"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0700
+
+- name: Add public key of the authorized to login user
+  ansible.builtin.authorized_key:
+    user: "{{ username }}"
+    key: "{{ ssh_key }}"
+    state: present
+
+- name: Disable SSH root login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+    create: true
+  notify: restart sshd
