@@ -3,7 +3,7 @@
 - name: Create a new user with sudo privileges
   ansible.builtin.user:
     name: "{{ username }}"
-    password: "{{ password }}"
+    password: "{{ password | password_hash('sha512') }}"
     groups: sudo
     append: true
     create_home: true
