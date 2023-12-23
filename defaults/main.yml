@@ -3,3 +3,5 @@
 username: johndoe
 password: ""
 ssh_key: "ssh-rsa ..."   # need to place here some dummy key
+groups: 
+  - sudo
