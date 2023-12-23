@@ -4,7 +4,7 @@
   ansible.builtin.user:
     name: "{{ username }}"
     password: "{{ password | password_hash('sha512') }}"
-    groups: "{{ groups | join(',') }}"
+    groups: "{{ user_groups | join(',') }}"
     append: true
     create_home: true
     shell: /bin/bash
