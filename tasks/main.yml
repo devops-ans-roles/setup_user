@@ -16,26 +16,3 @@
     regexp: "^{{ username }}"
     line: "{{ username }} ALL=(ALL) NOPASSWD:ALL"
     validate: visudo -cf %s
-
-- name: Ensure .ssh directory exists
-  ansible.builtin.file:
-    path: "/home/{{ username }}/.ssh"
-    state: directory
-    owner: "{{ username }}"
-    group: "{{ username }}"
-    mode: 0700
-
-- name: Add public key of the authorized to login user
-  ansible.builtin.authorized_key:
-    user: "{{ username }}"
-    key: "{{ ssh_key }}"
-    state: present
-
-- name: Disable SSH root login
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^PermitRootLogin'
-    line: 'PermitRootLogin no'
-    state: present
-    create: true
-  notify: restart sshd
