@@ -1,18 +1,4 @@
 ---
-# tasks file for setup_user
-- name: Create a new user with sudo privileges
-  ansible.builtin.user:
-    name: "{{ username }}"
-    password: "{{ password | password_hash('sha512') }}"
-    groups: "{{ user_groups | join(',') }}"
-    append: true
-    create_home: true
-    shell: /bin/bash
-
-- name: Allow passwordless sudo
-  ansible.builtin.lineinfile:
-    path: /etc/sudoers
-    state: present
-    regexp: "^{{ username }}"
-    line: "{{ username }} ALL=(ALL) NOPASSWD:ALL"
-    validate: visudo -cf %s
+- name: Process user
+  ansible.builtin.include_tasks: process_users.yaml
+  with_items: "{{ sys_user_accounts | flatten }}"

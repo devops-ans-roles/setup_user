@@ -1,7 +1,2 @@
 ---
-# defaults file for setup_user
-username: johndoe
-password: ""
-ssh_key: "ssh-rsa ..."   # need to place here some dummy key
-user_groups: 
-  - sudo
+sys_user_accounts: []
